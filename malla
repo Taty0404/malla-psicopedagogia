@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Malla Psicopedagogía Interactiva</title>
+<style>
+    body { font-family: Arial, sans-serif; background:#f9f9f9; padding:20px; }
+    h1 { text-align:center; margin-bottom:20px; }
+    h2 { margin-top:20px; color:#444; }
+    .semestre { background:#fff; padding:15px; margin:10px 0; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+    .ramo { display:inline-block; margin:5px; padding:10px 15px; border-radius:8px; background:#e0e0e0; cursor:pointer; transition:0.3s; }
+    .ramo.locked { background:#ccc; cursor:not-allowed; opacity:0.6; }
+    .ramo.completed { text-decoration: line-through; background:#90ee90; }
+    #progreso { font-size:18px; margin:20px 0; text-align:center; }
+    .boton-reset { display:block; margin:20px auto; padding:10px 20px; background:#f44336; color:#fff; border:none; border-radius:8px; cursor:pointer; }
+    .boton-reset:hover { background:#d32f2f; }
+</style>
+</head>
+<body>
+<h1>Malla Interactiva Psicopedagogía</h1>
+<div id="progreso">Progreso: 0%</div>
+
+<!-- Primer Semestre -->
+<div class="semestre">
+    <h2>1° Semestre</h2>
+    <div class="ramo" data-id="1">Introducción a la Psicopedagogía</div>
+    <div class="ramo" data-id="2">Bases Neurofisiológicas</div>
+    <div class="ramo" data-id="3">Herramientas para la Empleabilidad</div>
+    <div class="ramo" data-id="4">Psicología del Desarrollo y Aprendizaje</div>
+    <div class="ramo" data-id="5">Matemáticas Educación Superior</div>
+    <div class="ramo" data-id="6">Habilidad para la Comunicación</div>
+</div>
+
+<!-- Segundo Semestre -->
+<div class="semestre">
+    <h2>2° Semestre</h2>
+    <div class="ramo locked" data-id="7" data-req="1">Procesos Cognitivos</div>
+    <div class="ramo locked" data-id="8" data-req="4">Bases Psicopedagógicas</div>
+    <div class="ramo locked" data-id="9" data-req="5">Currículum y Evaluación</div>
+    <div class="ramo locked" data-id="10">Herramientas Innovación</div>
+    <div class="ramo locked" data-id="11">Proceso Socioafectivo</div>
+    <div class="ramo locked" data-id="12">IA en Educación</div>
+</div>
+
+<!-- Tercer Semestre -->
+<div class="semestre">
+    <h2>3° Semestre</h2>
+    <div class="ramo locked" data-id="13" data-req="7">Taller Diseño Universal del Aprendizaje</div>
+    <div class="ramo locked" data-id="14" data-req="2">Neurociencia en Psicopedagogía</div>
+    <div class="ramo locked" data-id="15" data-req="9">Adecuaciones Curriculares</div>
+    <div class="ramo locked" data-id="16">Sostenibilidad Organizacional</div>
+    <div class="ramo locked" data-id="17">Certificado Especialidad I</div>
+    <div class="ramo locked" data-id="18" data-req="8">Intervención Psicopedagógica I</div>
+</div>
+
+<!-- Cuarto Semestre -->
+<div class="semestre">
+    <h2>4° Semestre</h2>
+    <div class="ramo locked" data-id="19" data-req="18">Intervención Psicopedagógica II</div>
+    <div class="ramo locked" data-id="20" data-req="18">Evaluación Intervención Psicopedagógica</div>
+    <div class="ramo locked" data-id="21">Taller Proyecto Especialidad</div>
+    <div class="ramo locked" data-id="22">Inglés Inicial I</div>
+    <div class="ramo locked" data-id="23">Taller Marca Personal</div>
+    <div class="ramo locked" data-id="24">Certificado Especialidad II</div>
+</div>
+
+<!-- Quinto Semestre -->
+<div class="semestre">
+    <h2>5° Semestre</h2>
+    <div class="ramo locked" data-id="25" data-req="20">Práctica Evaluación I</div>
+    <div class="ramo locked" data-id="26">Instrumentos Evaluación Psicopedagógica</div>
+    <div class="ramo locked" data-id="27">Inglés Inicial II</div>
+    <div class="ramo locked" data-id="28">IA para Gestión Personal</div>
+    <div class="ramo locked" data-id="29">Taller Familia y Comunidad</div>
+</div>
+
+<!-- Sexto Semestre -->
+<div class="semestre">
+    <h2>6° Semestre</h2>
+    <div class="ramo locked" data-id="30" data-req="25">Práctica Evaluación II</div>
+    <div class="ramo locked" data-id="31">Psicopedagogía Socio-Comunicativa</div>
+    <div class="ramo locked" data-id="32">Habilidades Instrumentales</div>
+    <div class="ramo locked" data-id="33">Psicogerontología</div>
+    <div class="ramo locked" data-id="34">Certificado Especialidad III</div>
+</div>
+
+<!-- Séptimo Semestre -->
+<div class="semestre">
+    <h2>7° Semestre</h2>
+    <div class="ramo locked" data-id="35" data-req="30">Práctica Especialidad Integrada</div>
+    <div class="ramo locked" data-id="36">Gestión Proyectos Sociales</div>
+    <div class="ramo locked" data-id="37">Evaluación Habilidades Instrumentales</div>
+    <div class="ramo locked" data-id="38">Prevención Psicopatológica</div>
+    <div class="ramo locked" data-id="39">Estrategias Inclusión Diversidad</div>
+    <div class="ramo locked" data-id="40">Certificado Especialidad IV</div>
+</div>
+
+<!-- Octavo Semestre -->
+<div class="semestre">
+    <h2>8° Semestre</h2>
+    <div class="ramo locked" data-id="41" data-req="35">Psicopedagogía y Calidad de Vida</div>
+    <div class="ramo locked" data-id="42">Psicopedagogía Laboral</div>
+    <div class="ramo locked" data-id="43">Proyecto Especialidad Profesional</div>
+    <div class="ramo locked" data-id="44">Trabajo en Redes de Apoyo</div>
+    <div class="ramo locked" data-id="45">Coaching Laboral</div>
+</div>
+
+<button class="boton-reset" onclick="resetMalla()">Reiniciar Malla</button>
+
+<script>
+const ramos = document.querySelectorAll('.ramo');
+
+// Cargar estado desde LocalStorage
+let aprobados = JSON.parse(localStorage.getItem('aprobados')) || [];
+aprobados.forEach(id => {
+    const ramo = document.querySelector(`.ramo[data-id="${id}"]`);
+    if(ramo) ramo.classList.add('completed');
+    desbloquearDependientes(id);
+});
+actualizarProgreso();
+
+ramos.forEach(ramo => {
+    ramo.addEventListener('click', () => {
+        if(ramo.classList.contains('locked')) return;
+
+        ramo.classList.toggle('completed');
+
+        const id = ramo.dataset.id;
+        if(ramo.classList.contains('completed')) {
+            aprobados.push(id);
+            desbloquearDependientes(id);
+        } else {
+            aprobados = aprobados.filter(x => x !== id);
+        }
+        localStorage.setItem('aprobados', JSON.stringify(aprobados));
+        actualizarProgreso();
+    });
+});
+
+function desbloquearDependientes(id) {
+    document.querySelectorAll(`.ramo[data-req="${id}"]`).forEach(dep => {
+        dep.classList.remove('locked');
+    });
+}
+
+function actualizarProgreso() {
+    const total = ramos.length;
+    const completos = document.querySelectorAll('.ramo.completed').length;
+    const porcentaje = Math.round((completos / total) * 100);
+    document.getElementById('progreso').textContent = `Progreso: ${porcentaje}%`;
+}
+
+function resetMalla() {
+    localStorage.removeItem('aprobados');
+    ramos.forEach(r => r.classList.remove('completed'));
+    location.reload();
+}
+</script>
+</body>
+</html>
