@@ -1,0 +1,247 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Malla Psicopedagogía Interactiva</title>
+<style>
+    :root {
+        --color-bg: #f9f9f9;
+        --color-text: #333;
+        --color-card: #fff;
+        --color-primary: #4caf50;
+        --color-danger: #f44336;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: var(--color-bg);
+        color: var(--color-text);
+        transition: 0.3s;
+    }
+
+    body.dark {
+        --color-bg: #121212;
+        --color-text: #eee;
+        --color-card: #1f1f1f;
+    }
+
+    h1 { text-align: center; margin: 20px 0; }
+
+    .malla {
+        display: grid;
+        grid-template-columns: repeat(4, 250px);
+        gap: 15px;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+
+    .ramo {
+        padding: 10px;
+        background: var(--color-card);
+        border: 2px solid #ccc;
+        border-radius: 10px;
+        text-align: center;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.3s;
+        min-height: 60px;
+    }
+
+    .ramo.aprobado {
+        background: #c8e6c9;
+        text-decoration: line-through;
+        color: #555;
+        border-color: var(--color-primary);
+    }
+
+    .ramo.bloqueado {
+        background: #eee;
+        color: #aaa;
+        cursor: not-allowed;
+    }
+
+    .semestre {
+        grid-column: span 4;
+        text-align: center;
+        font-weight: bold;
+        font-size: 18px;
+        margin: 15px 0;
+    }
+
+    .semestre:nth-child(1) { color: #1976d2; }
+    .semestre:nth-child(2) { color: #388e3c; }
+    .semestre:nth-child(3) { color: #f57c00; }
+    .semestre:nth-child(4) { color: #7b1fa2; }
+    .semestre:nth-child(5) { color: #0288d1; }
+    .semestre:nth-child(6) { color: #c2185b; }
+    .semestre:nth-child(7) { color: #512da8; }
+    .semestre:nth-child(8) { color: #d32f2f; }
+
+    .buttons {
+        text-align: center;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        margin: 5px;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn-primary { background: var(--color-primary); color: white; }
+    .btn-danger { background: var(--color-danger); color: white; }
+    .btn-darkmode { background: #555; color: white; }
+
+    .contador {
+        text-align: center;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+</style>
+</head>
+<body>
+
+<h1>Malla Interactiva - Psicopedagogía</h1>
+<div class="contador" id="contador">Progreso: 0 / 45</div>
+<div class="buttons">
+    <button class="btn btn-primary" onclick="guardarProgreso()">Guardar Progreso</button>
+    <button class="btn btn-danger" onclick="resetearMalla()">Resetear</button>
+    <button class="btn btn-darkmode" onclick="toggleDarkMode()">Modo Oscuro</button>
+</div>
+
+<div class="malla" id="malla">
+<!-- Secciones de semestres y ramos (igual que antes) -->
+</div>
+
+<script>
+// Insertaremos dinámicamente los ramos para no duplicar código
+const data = {
+    1: ["Introducción a la Psicopedagogía", "Bases Neurofisiológicas", "Herramientas para la Empleabilidad",
+        "Psicología del Desarrollo", "Matemáticas Educación Superior", "Habilidad para la Comunicación"],
+    2: ["Procesos Cognitivos", "Bases Psicopedagógicas", "Currículum y Evaluación", "Herramientas Innovación",
+        "Proceso Socioafectivo", "IA en Psicopedagogía"],
+    3: ["Taller Diseño Universal", "Neurociencia Psicopedagogía", "Adecuaciones Curriculares",
+        "Sostenibilidad Organizacional", "Certificado Especialidad I", "Intervención Psicopedagogía I"],
+    4: ["Intervención Psicopedagogía II", "Evaluación Intervención", "Taller Proyecto Especialidad",
+        "Inglés Inicial I", "Taller Marca Personal", "Certificado Especialidad II"],
+    5: ["Práctica Evaluación e Intervención I", "Instrumentos Evaluación", "Inglés Inicial II",
+        "IA Gestión Personal", "Taller Familia y Comunidad"],
+    6: ["Práctica Evaluación II", "Psicopedagogía Sociocomunitaria", "Habilidades Instrumentales",
+        "Psicogerontología", "Certificado Especialidad III"],
+    7: ["Práctica Especialidad Integrada", "Gestión Proyectos Sociales", "Evaluación Habilidades Instrumentales",
+        "Mecanismos Prevención Psicopatología", "Estrategia Inclusión Diversidad", "Certificado Especialidad IV"],
+    8: ["Psicopedagogía y Calidad de Vida", "Psicopedagogía Laboral", "Proyecto Especialidad Profesional",
+        "Trabajo en Redes de Apoyo", "Coaching Laboral"]
+};
+
+const malla = document.getElementById('malla');
+let id = 1;
+
+for (let semestre in data) {
+    const divSem = document.createElement('div');
+    divSem.className = 'semestre';
+    divSem.textContent = semestre + '° Semestre';
+    malla.appendChild(divSem);
+
+    data[semestre].forEach(nombre => {
+        const divRamo = document.createElement('div');
+        divRamo.className = 'ramo';
+        divRamo.dataset.id = id;
+        if (semestre > 1) divRamo.classList.add('bloqueado');
+        divRamo.dataset.prereq = (semestre == 1) ? "" : (id <= 12 ? "1-6" :
+                                id <= 18 ? "7-12" :
+                                id <= 24 ? "18" :
+                                id <= 29 ? "19" :
+                                id <= 34 ? "25" :
+                                id <= 40 ? "30" : "35");
+        divRamo.textContent = nombre;
+        malla.appendChild(divRamo);
+        id++;
+    });
+}
+
+const ramos = document.querySelectorAll('.ramo');
+const contador = document.getElementById('contador');
+
+function checkUnlock() {
+    ramos.forEach(ramo => {
+        if (ramo.dataset.prereq) {
+            if (ramo.dataset.prereq.includes("-")) {
+                let [start, end] = ramo.dataset.prereq.split("-").map(Number);
+                let allMet = true;
+                for (let i = start; i <= end; i++) {
+                    let req = document.querySelector(`.ramo[data-id="${i}"]`);
+                    if (!req.classList.contains('aprobado')) {
+                        allMet = false;
+                        break;
+                    }
+                }
+                if (allMet) ramo.classList.remove('bloqueado');
+            } else if (ramo.dataset.prereq !== "") {
+                let req = document.querySelector(`.ramo[data-id="${ramo.dataset.prereq}"]`);
+                if (req.classList.contains('aprobado')) ramo.classList.remove('bloqueado');
+            }
+        }
+    });
+}
+
+function updateContador() {
+    const aprobados = document.querySelectorAll('.ramo.aprobado').length;
+    contador.textContent = `Progreso: ${aprobados} / 45`;
+}
+
+ramos.forEach(ramo => {
+    ramo.addEventListener('click', () => {
+        if (ramo.classList.contains('bloqueado')) return;
+        ramo.classList.toggle('aprobado');
+        checkUnlock();
+        updateContador();
+    });
+});
+
+function guardarProgreso() {
+    let aprobados = [];
+    ramos.forEach(ramo => {
+        if (ramo.classList.contains('aprobado')) {
+            aprobados.push(ramo.dataset.id);
+        }
+    });
+    localStorage.setItem('progresoMalla', JSON.stringify(aprobados));
+    alert('Progreso guardado');
+}
+
+function cargarProgreso() {
+    let aprobados = JSON.parse(localStorage.getItem('progresoMalla'));
+    if (aprobados) {
+        aprobados.forEach(id => {
+            let ramo = document.querySelector(`.ramo[data-id="${id}"]`);
+            if (ramo) ramo.classList.add('aprobado');
+        });
+        checkUnlock();
+        updateContador();
+    }
+}
+
+function resetearMalla() {
+    localStorage.removeItem('progresoMalla');
+    ramos.forEach(r => r.classList.remove('aprobado'));
+    ramos.forEach(r => { if (r.dataset.prereq) r.classList.add('bloqueado'); });
+    updateContador();
+    alert('Malla reseteada');
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle('dark');
+}
+
+cargarProgreso();
+updateContador();
+</script>
+
+</body>
+</html>
